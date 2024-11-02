@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotation Form</title>
+  <style>
+    /* Basic Styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+      padding: 5px;
+      margin-right: 20px;
+    }
+    .header-section, .item-section {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none; /* Hidden initially, shown when button is clicked */
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #ADD8E6;
+    }
+    td[contenteditable="true"] {
+      background-color: #F0FFFF;
+    }
+    button {
+      padding: 8px 15px;
+      margin-top: 10px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Quotation Form</h2>
+
+<!-- Header Section -->
+<div class="header-section">
+  <h3>Quotation Header</h3>
+  <div class="form-group">
+    <label for="quotationNo">Quotation No:</label>
+    <input type="text" id="quotationNo">
+    <label for="netValue">Net Value:</label>
+    <input type="number" id="netValue">
+  </div>
+  <div class="form-group">
+    <label for="customerNo">Customer No:</label>
+    <input type="text" id="customerNo">
+    <label for="customerName">Customer Name:</label>
+    <input type="text" id="customerName">
+  </div>
+  <div class="form-group">
+    <label for="deliveryDate">Delivery Date:</label>
+    <input type="date" id="deliveryDate">
+    <label for="paymentTerms">Payment Terms:</label>
+    <input type="text" id="paymentTerms">
+  </div>
+  <div class="form-group">
+    <label for="quotationValidity">Quotation Validity:</label>
+    <input type="date" id="quotationValidity">
+  </div>
+</div>
+
+<!-- Item Section -->
+<div class="item-section">
+  <!-- Toggle Button -->
+  <button id="toggleButton">+ Item Details</button>
+
+  <!-- Add Row Button -->
+  <button id="addRowButton">Add Row</button>
+
+  <!-- Item Details Table -->
+  <table id="itemDetails">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Material</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Unit Price</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="itemTableBody">
+      <!-- Rows will be dynamically added here -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // Toggle the visibility of the Item Details table
+  document.getElementById("toggleButton").addEventListener("click", function () {
+    const table = document.getElementById("itemDetails");
+    table.style.display = table.style.display === "none" ? "table" : "none";
+    this.textContent = table.style.display === "none" ? "+ Item Details" : "- Hide Item Details";
+  });
+
+  
+
+  // Function to create a new row
+  function createNewRow() {
+    const tableBody = document.getElementById("itemTableBody");
+    const newRow = tableBody.insertRow();
+
+    for (let j = 0; j < 7; j++) {
+      const newCell = newRow.insertCell(j);
+      newCell.contentEditable = true;
+
+      // Initialize Amount column with 0.00
+      if (j === 6) {
+        newCell.innerText = "INR 0.00";
+      }
+
+      // Add event listener for Quantity and Unit Price columns
+      if (j === 3 || j === 5) {
+        newCell.addEventListener("input", calculateAmount);
+      }
+    }
+
+    // Add a delete button
+    const actionCell = newRow.insertCell(7);
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+    deleteButton.onclick = () => tableBody.deleteRow(newRow.rowIndex - 1); // Adjust for header row
+    actionCell.appendChild(deleteButton);
+  }
+
+  // Function to calculate the Amount based on Quantity and Unit Price
+  function calculateAmount(event) {
+    const row = event.target.parentNode.parentNode;
+    const quantity = parseFloat(row.cells[3].innerText) || 0;
+    const unitPrice = parseFloat(row.cells[5].innerText) || 0;
+    const amount = quantity * unitPrice;
+
+    row.cells[6].innerText = `INR ${amount.toFixed(2)}`;
+  }
+
+  // Add event listener to the Add Row button
+  document.getElementById("addRowButton").addEventListener("click", createNewRow);
+
+  // Create 10 empty rows on page load
+  window.onload = function() {
+    for (let i = 0; i < 10; i++) {
+      createNewRow();
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</script>
+
+</body>
+</html>

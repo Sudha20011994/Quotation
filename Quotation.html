@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Header.css">
+  <link rel="stylesheet" href="Item.css">
+  <title>Quotation Form</title>
+  <style>      </style>
+ 
+  <title>Item Details</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+
+<h2>Quotation Form</h2>
+
+<!-- Header Section -->
+<div class="header-section">
+  <h3>Quotation Header</h3>
+  <div class="form-group">
+    <label for="quotationNo">Quotation No:</label>
+    <input type="text" id="quotationNo">
+    <label for="netValue">Net Value:</label>
+    <input type="number" id="netValue">
+  </div>
+  <div class="form-group">
+    <label for="customerNo">Customer No:</label>
+    <input type="text" id="customerNo">
+    <label for="customerName">Customer Name:</label>
+    <input type="text" id="customerName">
+  </div>
+  <div class="form-group">
+    <label for="deliveryDate">Delivery Date:</label>
+    <input type="date" id="deliveryDate">
+    <label for="paymentTerms">Payment Terms:</label>
+    <input type="text" id="paymentTerms">
+  </div>
+  <div class="form-group">
+   
+    <label for="quotationValidity">Quotation Validity:</label>
+    <input type="date" id="quotationValidity">
+  </div>
+</div>
+
+<!-- Item Section -->
+
+<div class="item-section">
+    
+<!-- Add New Row Button -->
+<button onclick="addRow()">Add New Row</button>
+<table id="editableTable">
+    <tr>
+        <th>Item</th>
+        <th>Material</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Unit Price</th>
+        <th>Amount</th>
+        <th>Actions</th>
+
+    </tr>
+</table>
+
+<script>
+    // Function to add a new editable row
+    function addRow() {
+        const table = document.getElementById("editableTable");
+        const newRow = table.insertRow();
+
+        // Columns to be added in the new row
+        const columns = ["Item", "Material", "Description", "Qty", "Price", "Unit", "Amount"];
+
+        columns.forEach((col, index) => {
+            const newCell = newRow.insertCell(index);
+            newCell.contentEditable = true;
+            newCell.innerText = (col === "Amount") ? "$0.00" : ""; // Initialize Amount with $0.00
+
+            // Attach an event listener to the Qty and Price cells for calculation
+            if (col === "Qty" || col === "Price") {
+                newCell.addEventListener("input", calculateAmount);
+            }
+        });
+
+        // Add a delete button in the Action column
+        const actionCell = newRow.insertCell(columns.length);
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.onclick = () => table.deleteRow(newRow.rowIndex);
+        actionCell.appendChild(deleteButton);
+    }
+
+    // Function to calculate the Amount based on Qty and Price
+    function calculateAmount(event) {
+        const row = event.target.parentNode;
+        const qtyCell = row.cells[3];
+        const priceCell = row.cells[4];
+        const amountCell = row.cells[6];
+
+        // Get values from Qty and Price cells
+        const qty = parseFloat(qtyCell.innerText) || 0;
+        const price = parseFloat(priceCell.innerText) || 0;
+        const amount = qty * price;
+
+        // Update the Amount cell
+        amountCell.innerText = `$${amount.toFixed(2)}`;
+    }
+</script>
+
+
+
+
+
+
+<!-- Button to show the new div -->
+<button onclick="showNewRoomDiv()">Add Row</button>
+
+<!-- New div to display the table -->
+<div class="new-room-div" id="newRoomDiv">
+    <h3>Room Item Details</h3>
+    <!-- Button to add new rows to the table -->
+    <button onclick="addRow()">Add Item Row</button>
+    <!-- Dynamic editable table -->
+    <table id="itemTable">
+        <tr>
+            <th>Item</th>
+            <th>Material</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Unit</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+    </table>
+    <!-- Close button to hide the new room div -->
+    <button onclick="closeNewRoomDiv()">Close</button>
+</div>
+
+<script>
+    // Function to show the new room div
+    function showNewRoomDiv() {
+        const roomDiv = document.getElementById("newRoomDiv");
+        roomDiv.style.display = "block"; // Show the div
+    }
+
+    // Function to hide the new room div
+    function closeNewRoomDiv() {
+        const roomDiv = document.getElementById("newRoomDiv");
+        roomDiv.style.display = "none"; // Hide the div
+    }
+
+    // Function to add a new editable row to the table
+    function addRow() {
+        const table = document.getElementById("itemTable");
+        const newRow = table.insertRow();
+
+        // Columns to be added in the new row
+        const columns = ["Item", "Material", "Description", "Qty", "Price", "Unit", "Amount"];
+
+        columns.forEach((col, index) => {
+            const newCell = newRow.insertCell(index);
+            newCell.contentEditable = true;
+            newCell.innerText = (col === "Amount") ? "$0.00" : ""; // Initialize Amount with $0.00
+
+            // Attach an event listener to the Qty and Price cells for calculation
+            if (col === "Qty" || col === "Price") {
+                newCell.addEventListener("input", calculateAmount);
+            }
+        });
+
+        // Add a delete button in the Action column
+        const actionCell = newRow.insertCell(columns.length);
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.onclick = () => table.deleteRow(newRow.rowIndex);
+        actionCell.appendChild(deleteButton);
+    }
+
+    // Function to calculate the Amount based on Qty and Price
+    function calculateAmount(event) {
+        const row = event.target.parentNode;
+        const qtyCell = row.cells[3];
+        const priceCell = row.cells[4];
+        const amountCell = row.cells[6];
+
+        // Get values from Qty and Price cells
+        const qty = parseFloat(qtyCell.innerText) || 0;
+        const price = parseFloat(priceCell.innerText) || 0;
+        const amount = qty * price;
+
+        // Update the Amount cell
+        amountCell.innerText = `$${amount.toFixed(2)}`;
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table id="editableTable">
+    <tr>
+        <th>Item</th>
+        <th>Material</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Unit Price</th>
+        <th>Amount</th>
+        <th>Actions</th>
+
+    </tr>
+</table>
+
+<script>
+    // Function to add a new editable row
+    function addRoom() {
+        const table = document.getElementById("editableTable");
+        const newRow = table.insertRow();
+
+        // Columns to be added in the new row
+        const columns = ["Item", "Material", "Description", "Qty", "Price", "Unit", "Amount"];
+
+        columns.forEach((col, index) => {
+            const newCell = newRow.insertCell(index);
+            newCell.contentEditable = true;
+            newCell.innerText = (col === "Amount") ? "$0.00" : ""; // Initialize Amount with $0.00
+
+            // Attach an event listener to the Qty and Price cells for calculation
+            if (col === "Qty" || col === "Price") {
+                newCell.addEventListener("input", calculateAmount);
+            }
+        });
+
+        // Add a delete button in the Action column
+        const actionCell = newRow.insertCell(columns.length);
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.onclick = () => table.deleteRow(newRow.rowIndex);
+        actionCell.appendChild(deleteButton);
+    }
+
+    // Function to calculate the Amount based on Qty and Price
+    function calculateAmount(event) {
+        const row = event.target.parentNode;
+        const qtyCell = row.cells[3];
+        const priceCell = row.cells[4];
+        const amountCell = row.cells[6];
+
+        // Get values from Qty and Price cells
+        const qty = parseFloat(qtyCell.innerText) || 0;
+        const price = parseFloat(priceCell.innerText) || 0;
+        const amount = qty * price;
+
+        // Update the Amount cell
+        amountCell.innerText = `$${amount.toFixed(2)}`;
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
