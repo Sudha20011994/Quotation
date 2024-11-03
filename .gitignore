@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Backend/QuotationService/QuotationService/bin/Debug/net8.0
+/Backend/QuotationService/QuotationService/obj
+/Backend/QuotationService/.vs/QuotationService
+/FrontEnd/node_modules
+/FrontEnd/package-lock.json
+/FrontEnd/yarn.lock
